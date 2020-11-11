@@ -1,0 +1,101 @@
+
+--Creación de base de datos
+
+--Creación de las tablas	
+
+CREATE TABLE Artículo (
+  cod_art INTEGER NOT NULL,
+  Nombre VARCHAR (50) NOT NULL,
+  Descripción VARCHAR (150) NOT NULL,
+  unidades_disponibles INTEGER NOT NULL,
+  PRIMARY KEY (cod_art)
+);
+
+CREATE TABLE Cliente (
+  dni_cli VARCHAR(9) not null,
+  Nombre_cli VARCHAR(50) not null,
+  Apellido_cli VARCHAR (50) not null,
+  telefono VARCHAR (15) not null,
+  fecha_de_alta DATE NOT NULL,
+  PRIMARY KEY (dni_cli)
+
+);
+	CREATE TABLE Venta (
+    cod_art INTEGER NOT NULL,
+	DNI_cli1 VARCHAR (9) NOT NULL,
+	fecha_hora TIMESTAMP NOT NULL,
+	unid_vent1	INTEGER NOT NULL,
+  PRIMARY KEY (fecha_hora),
+  FOREIGN KEY (cod_art) references Artículo(cod_art),
+  FOREIGN KEY (dni_cli) references Cliente(dni_cli)
+
+);
+
+--INSERCIÓN DE DATOS
+--Cliente
+insert into Cliente values ('33445666', 'Juan','Piquete','01 1-1567899879','15/05/2015');
+insert into Cliente values ('34347788', 'Carlos','Calabresa','01 1-1564566549','16/06/2016');
+insert into Cliente values ('33556677', 'Esteban','Quito','01 1-1561233219','14/04/2014');
+insert into Cliente values ('33445588',	'Andrea','Lira','0342-1 55398022','11/01/2011');
+insert into Cliente values ('22445566',	'Laura', 'Agnat','0342-1 56378022','3/03/2013');
+insert into Cliente values ('25335999',	'Marixa','Bella','0342-1 54348022','12/02/2012');
+
+select*from Cliente;
+
+
+-- artículo
+insert into artículo values ('1', 'Yerba', 'Paquete de 1 kg de yerba', '90');
+insert into artículo values ('2', 'Azucar', 'Paquete de 1 kg de azúcar', '87');
+insert into artículo values ('3', 'pan', 'Bolsa de 1kg de pan', '105');
+insert into artículo values ('4', 'Leche larga vida', 'Caja tetrapack de leche', '103');
+insert into artículo values ('5', 'Bolsa de caramelos', 'Bolsa de 250 g de caramelos', '66');
+insert into artículo values ('6', 'Queso cremoso', 'Paquete de 250 g de queso', '42');
+
+select*from artículo;
+
+-- Venta
+insert into Venta values ('1', '33445666', '01/01/2019 11:30', '5');
+insert into Venta values ('2', '34347788', '01/02/2019 12:30', '4');
+insert into Venta values ('1', '33556677', '01/05/2019 10:30', '7');
+insert into Venta values ('2', '33445588', '13/04/2019 09:30', '3');
+insert into Venta values ('3', '22445566', '13/07/2019 09:00', '2');
+insert into Venta values ('3', '25335999', '14/01/2019 10:00', '1');
+insert into Venta values ('4', '33445666', '14/02/2019 11:00', '1');
+insert into Venta values ('1', '34347788', '14/06/2019 18:00', '4');
+insert into Venta values ('5', '33556677', '14/06/2019 18:05', '6');
+insert into Venta values ('4', '33445588', '14/07/2019 18:30', '3');
+insert into Venta values ('6', '22445566', '14/08/2019 18:00', '5');
+insert into Venta values ('3', '25335999', '04/09/2019 19:00', '2');
+
+select*from Venta;
+
+4.
+-- punto 4 
+--a
+select dni_cli, Nombre_cli
+from Cliente 
+where fecha_de_alta >='2012-09-15';
+
+--b
+SELECT nombre_cli, sum(unid_vent)
+FROM cliente join venta on dni_cli = dni_cli1
+GROUP BY nombre_cli
+
+--c
+Select c.nombre_cli, c.apellido_cli, a.nom_art
+FROM cliente c join venta v on c.dni_cli = v.dni_cli1
+               join artículo a on a.cod_art = v.cod_art1
+ORDER BY v.fecha_hora DESC;
+
+-- d
+SELECT nom_art, sum(unid_vent)
+FROM artículo join venta on cod_art = cod_art1
+GROUP BY nom_art
+ORDER BY nom_art ASC;
+
+--e
+SELECT dni_cli
+FROM cliente join venta on dni_cli = dni_cli1
+GROUP BY dni_cli
+HAVING SUM(unid_vent) > 10
+
